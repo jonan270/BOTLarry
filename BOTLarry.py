@@ -1,5 +1,7 @@
+from asyncio.windows_events import NULL
 import os
 import discord
+import random
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,13 +10,44 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_GUILD = os.getenv('DISCORD_GUILD')
 
+mapPool = [
+    'dust2',
+    'mirage',
+    'inferno',
+    'overpass',
+    'vertigo',
+    'nuke',
+    'ancient'
+]
+
+def mapQuote(map):
+    quoteList = [
+        f'Kör {map}! Vi vinner alltid när vi kör {map}.',
+        f'Det kanske är dags för en {map}?',
+        f'Jolle blir alltid så glad när vi lirar {map}:hearts:',
+        (
+        f'Kör {map}! Vi vinner aldrig när vi kör {map}'
+        '... Men vi kör den ändå!'
+        ),
+        (
+        f'Kan vi inte bara ta en {map}? Känns som '
+        ' det var längesen.'
+        )
+    ]
+    return random.choice(quoteList)
+
+
 client = discord.Client()
 
 def getCorrectResponse(content):
-    if 'telefon' in content.lower() or 'mobil' in content.lower():
+    msg = content.lower()
+    if 'telefon' in msg or 'mobil' in msg:
         return "Aa fan att tekniken alltid ska strula asså!"
+    elif msg == '!karta':
+        return mapQuote(random.choice(mapPool))
+
     else:
-        return "" # No specific response needed
+        return NULL # No specific response needed
 
 
 @client.event
@@ -35,14 +68,14 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    print("In")
     # Dont talk to yourself silly Larry
     if message.author == client.user:
         return
     
     # Provide appropriate response if needed
     response = getCorrectResponse(message.content)
-    if response != "":
+
+    if response:
         await textChannel.send(getCorrectResponse(message.content))
 
     

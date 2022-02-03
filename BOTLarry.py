@@ -10,6 +10,8 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_GUILD = os.getenv('DISCORD_GUILD')
 
+client = discord.Client()
+
 # No shitty maps allowed
 mapPool = [
     'dust2',
@@ -21,12 +23,32 @@ mapPool = [
     'ancient'
 ]
 
+def isLarry(name):
+    return name == 'larryloverbone' or name == 'larryloverbone1'
+
 # Get some classic larry quotes from text file
 def getQuote():
     quotes = open('quotes.txt', 'r', encoding = 'utf8')
     lines = quotes.readlines()
     quote = str(random.choice(lines))
     return quote
+
+#@client.event async 
+def addQuote(quote):
+    oldQuotes = open('quotes.txt', 'r', encoding = 'utf8')
+    lines = oldQuotes.readlines()
+    oldQuotes.close()
+
+    lines.append(f'\n{quote}')
+
+    # Convert from list to single string
+    newText = "".join(lines)
+
+    newQuotes = open('quotes.txt', 'w', encoding = 'utf8')
+    print("Writing")
+    newQuotes.write(newText)
+    newQuotes.close()
+
 
 # Spice up the chosen map message for the given map
 def mapQuote(map):
@@ -45,21 +67,23 @@ def mapQuote(map):
     ]
     return random.choice(quoteList)
 
-
-client = discord.Client()
-
-def getCorrectResponse(content):
+@client.event
+async def getCorrectResponse(content):
     msg = content.lower()
-    if msg == '!larry':
+    firstWord = msg.split()[0]
+
+    if firstWord == '!citat':
+        addQuote(content)
+        return 'Kunde inte ha sagt det bättre själv! Det ska jag komma ihåg.'
+    elif msg == '!larry':
+        print("larry")
         return getQuote()
     elif 'telefon' in msg or 'mobil' in msg:
         return "Aa fan att tekniken alltid ska strula asså!"
     elif msg == '!karta':
         return mapQuote(random.choice(mapPool))
-
     else:
         return NULL # No specific response needed
-
 
 @client.event
 async def on_ready():
@@ -79,15 +103,17 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    print(message.author.name)
     # Dont talk to yourself silly Larry
     if message.author == client.user:
         return
     
     # Provide appropriate response if needed
-    response = getCorrectResponse(message.content)
-
+    response = await getCorrectResponse(message.content)
     if response:
-        await textChannel.send(getCorrectResponse(message.content))
+        await textChannel.send(response)
+    #elif isLarry(message.author.name):
+    #    await textChannel.send(getCorrectResponse('!larry'))
 
     
 

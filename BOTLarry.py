@@ -1,4 +1,4 @@
-#from asyncio.windows_events import NULL
+from asyncio.windows_events import NULL
 import os
 import discord
 import random
@@ -33,12 +33,15 @@ def getQuote():
     quote = str(random.choice(lines))
     return quote
 
-#@client.event async 
 def addQuote(quote):
     oldQuotes = open('quotes.txt', 'r', encoding = 'utf8')
     lines = oldQuotes.readlines()
     oldQuotes.close()
+    
+    # Remove !citat
+    quote = quote.split(' ', 1)[1]
 
+    # Add to a new line
     lines.append(f'\n{quote}')
 
     # Convert from list to single string
@@ -83,7 +86,7 @@ async def getCorrectResponse(content):
     elif msg == '!karta':
         return mapQuote(random.choice(mapPool))
     else:
-        return NULL # No specific response needed
+        return "" # No specific response needed
 
 @client.event
 async def on_ready():

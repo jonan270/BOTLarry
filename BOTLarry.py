@@ -10,6 +10,7 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_GUILD = os.getenv('DISCORD_GUILD')
 
+# No shitty maps allowed
 mapPool = [
     'dust2',
     'mirage',
@@ -20,13 +21,14 @@ mapPool = [
     'ancient'
 ]
 
+# Get some classic larry quotes from text file
 def getQuote():
-    quotes = open('quotes.txt', 'r')
+    quotes = open('quotes.txt', 'r', encoding = 'utf8')
     lines = quotes.readlines()
-    print(lines[1])
     quote = str(random.choice(lines))
     return quote
 
+# Spice up the chosen map message for the given map
 def mapQuote(map):
     quoteList = [
         f'Kör {map}! Vi vinner alltid när vi kör {map}.',

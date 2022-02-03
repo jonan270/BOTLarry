@@ -20,6 +20,13 @@ mapPool = [
     'ancient'
 ]
 
+def getQuote():
+    quotes = open('quotes.txt', 'r')
+    lines = quotes.readlines()
+    print(lines[1])
+    quote = str(random.choice(lines))
+    return quote
+
 def mapQuote(map):
     quoteList = [
         f'Kör {map}! Vi vinner alltid när vi kör {map}.',
@@ -41,7 +48,9 @@ client = discord.Client()
 
 def getCorrectResponse(content):
     msg = content.lower()
-    if 'telefon' in msg or 'mobil' in msg:
+    if msg == '!larry':
+        return getQuote()
+    elif 'telefon' in msg or 'mobil' in msg:
         return "Aa fan att tekniken alltid ska strula asså!"
     elif msg == '!karta':
         return mapQuote(random.choice(mapPool))

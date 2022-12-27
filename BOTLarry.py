@@ -22,7 +22,8 @@ mapPool = [
     'overpass',
     'vertigo',
     'nuke',
-    'ancient'
+    'ancient',
+    'anubis'
 ]
 
 def isLarry(name):

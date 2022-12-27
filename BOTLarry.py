@@ -10,7 +10,9 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 DISCORD_GUILD = os.getenv('DISCORD_GUILD')
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents = intents)
 
 # No shitty maps allowed
 mapPool = [

@@ -89,8 +89,8 @@ async def getCorrectResponse(content):
         return "Aa fan att tekniken alltid ska strula asså!"
     elif msg == '!karta':
         return mapQuote(random.choice(mapPool))
-    elif msg == '!crosshair':
-        return getCrosshair()
+    elif firstWord == '!crosshair':
+        return getCrosshair(content)
     else:
         return "" # No specific response needed
     

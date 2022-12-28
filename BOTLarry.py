@@ -3,6 +3,7 @@ import os
 import discord
 import random
 from dotenv import load_dotenv
+from crosshairgenerator import getCrosshair
 
 load_dotenv()
 
@@ -88,6 +89,8 @@ async def getCorrectResponse(content):
         return "Aa fan att tekniken alltid ska strula asså!"
     elif msg == '!karta':
         return mapQuote(random.choice(mapPool))
+    elif msg == '!crosshair':
+        return getCrosshair()
     else:
         return "" # No specific response needed
     

@@ -27,9 +27,6 @@ mapPool = [
     'anubis'
 ]
 
-def isLarry(name):
-    return name == 'larryloverbone' or name == 'larryloverbone1'
-
 # Get some classic larry quotes from text file
 def getQuote():
     quotes = open('quotes.txt', 'r', encoding = 'utf8')
@@ -78,7 +75,7 @@ def mapQuote(map):
         '... Men vi kör den ändå!'
         ),
         (
-        f'Kan vi inte bara ta en {map}? Känns som '
+        f'Kan vi inte bara ta en {map}? Känns som'
         ' det var längesen.'
         )
     ]
@@ -99,7 +96,7 @@ async def getCorrectResponse(content):
         print("larry")
         return getQuote()
     elif 'telefon' in msg or 'mobil' in msg:
-        return "Aa fan att tekniken alltid ska strula asså!"
+        return 'Aa fan att tekniken alltid ska strula asså!'
     elif msg == '!karta':
         return mapQuote(random.choice(mapPool))
     elif firstWord == '!crosshair':
@@ -137,9 +134,5 @@ async def on_message(message):
     response = await getCorrectResponse(message.content)
     if response:
         await activeTextChannel.send(response)
-    #elif isLarry(message.author.name):
-    #    await textChannel.send(getCorrectResponse('!larry'))
-
-    
 
 client.run(DISCORD_TOKEN)

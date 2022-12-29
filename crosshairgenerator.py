@@ -16,8 +16,6 @@ def getCrosshair(msgContent):
     else:
         return "!crosshair följt av ett namn hade ju vart trevligt."
 
-
-# Gap beroende på om man har dot
 # Generate a random semi-reasonable crosshair
 def _randCrosshair():
     useDot = _percentChance(30)

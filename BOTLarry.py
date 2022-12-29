@@ -37,24 +37,34 @@ def getQuote():
     quote = str(random.choice(lines))
     return quote
 
+# Try to add new quote to list
 def addQuote(quote):
-    oldQuotes = open('quotes.txt', 'r', encoding = 'utf8')
-    lines = oldQuotes.readlines()
-    oldQuotes.close()
-    
-    # Remove !citat
-    quote = quote.split(' ', 1)[1]
+    nWords = len(quote.split());
 
-    # Add to a new line
-    lines.append(f'\n{quote}')
+    # Add quote if message contains more than just !citat
+    if(nWords > 1):
+        try:
+            oldQuotes = open('quotes.txt', 'r', encoding = 'utf8')
+            lines = oldQuotes.readlines()
+            oldQuotes.close()
+            
+            # Remove !citat
+            quote = quote.split(' ', 1)[1]
 
-    # Convert from list to single string
-    newText = "".join(lines)
+            # Add to a new line
+            lines.append(f'\n{quote}')
 
-    newQuotes = open('quotes.txt', 'w', encoding = 'utf8')
-    print("Writing")
-    newQuotes.write(newText)
-    newQuotes.close()
+            # Convert from list to single string
+            newText = "".join(lines)
+
+            newQuotes = open('quotes.txt', 'w', encoding = 'utf8')
+            print("Writing")
+            newQuotes.write(newText)
+            newQuotes.close()
+            return True;
+        except:
+            print("Quote could not be added.")
+            return False;
 
 
 # Spice up the chosen map message for the given map
@@ -80,8 +90,11 @@ async def getCorrectResponse(content):
     firstWord = msg.split()[0]
 
     if firstWord == '!citat':
-        addQuote(content)
-        return 'Kunde inte ha sagt det bättre själv! Det ska jag komma ihåg.'
+        success = addQuote(content)
+        if success:
+            return 'Kunde inte ha sagt det bättre själv! Det ska jag komma ihåg.'
+        else:
+            return 'Sådär skulle jag aldrig säga!'
     elif msg == '!larry':
         print("larry")
         return getQuote()
